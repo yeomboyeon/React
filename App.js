@@ -1,8 +1,9 @@
-import React from "react";
-import logo from "./logo.svg";
+import React from "react"; // React 실행하기 위해 import 추가
+
 import "./App.css";
 
 function App() {
+  // 적용하려는 관련 객체들 저장
   const [products, setProducts] = React.useState([
     {
       name: "Nike CruzrOne",
@@ -23,12 +24,17 @@ function App() {
   ]);
 
   const [myCart, setMyCart] = React.useState([]);
+  // 장바구니에 넣기 위한 빈 배열 추가
 
+  // 이미지 클릭시 보여지는 modal 배열 추가
   const [showModal, setShowModal] = React.useState({
     show: false,
     image: null,
   });
 
+  // useEffect 함수 추가(이미지 클릭 후 주변 배경 클릭시 사라지게 함)
+  // click 이벤트, ...함수, show 화면과 image 화면에 각각 처리
+  // setshowmodal 변수로 하여금 셋팅값 변경 처리
   React.useEffect(() => {
     window.addEventListener("click", (event) => {
       if (event.target.className === "modal-bg") {
@@ -38,8 +44,14 @@ function App() {
         setShowModal(cloneShowModal);
       }
     });
-  }, []);
+  }, []); // 빈 배열을 추가해야 값이 쌓이게 된다.
 
+  // 전체태그1, 2, 화면태그1,2 묶음 태그, 화면태그1, 2
+  // map() 자료 불러오기
+  // key 가장 상위 태그를 불러오기
+  // 이미지에 클론코딩 추가
+  // 장바구니에 넣기에 동일 상품 클릭시 표시안되도록 구현(push는 제한)
+  //
   return (
     <div className="App">
       <div className="wrapper">
