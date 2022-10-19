@@ -23,10 +23,11 @@ function App() {
     },
   ]);
 
+  // 장바구니에 담을 빈 배열 추가
   const [myCart, setMyCart] = React.useState([]);
-  // 장바구니에 넣기 위한 빈 배열 추가
 
-  // 이미지 클릭시 보여지는 modal 배열 추가
+  // 이미지 클릭시 보여주는 클린 modal 추가
+  // 첫 화면은 클릭전이기에 show :false, image:null 값으로 설정
   const [showModal, setShowModal] = React.useState({
     show: false,
     image: null,
@@ -46,12 +47,13 @@ function App() {
     });
   }, []); // 빈 배열을 추가해야 값이 쌓이게 된다.
 
-  // 전체태그1, 2, 화면태그1,2 묶음 태그, 화면태그1, 2
-  // map() 자료 불러오기
-  // key 가장 상위 태그를 불러오기
-  // 이미지에 클론코딩 추가
-  // 장바구니에 넣기에 동일 상품 클릭시 표시안되도록 구현(push는 제한)
-  //
+  /**전체태그1,2 화면태그1,2 묶음 화면태그1,2
+   * map() 자료 불러오기
+   * key 값은 가장 상위 부모태그
+   * 이미지에 클론 코딩 추가
+   * 장바구니 클릭시 동일 상품 표시안되도록 구현하기
+   * ...연산자 활용
+   */
   return (
     <div className="App">
       <div className="wrapper">
@@ -61,12 +63,12 @@ function App() {
             className="logo"
             alt="로고"
           />
-          <div className="title">Picked items</div>
+          <div className="title">name</div>
           <div className="shop-items">
             {products &&
               products.map((item, index) => {
                 return (
-                  <div key={`products-${index}`}>
+                  <div key={item.index}>
                     <div className="item">
                       <div className="item-block">
                         <div className="image-area">
@@ -78,19 +80,17 @@ function App() {
                               setShowModal(cloneShowModal);
                             }}
                             src={item.image}
-                            alt="상품이미지"
                             className="image"
+                            alt="상품이미지"
                           />
                         </div>
                         <div className="name">{item.name}</div>
-                        <div className="description">{item.descrition}</div>
+                        <div className="descrition">{item.descrition}</div>
                         <div className="bottom-area">
                           <div className="price">{item.price}</div>
                           <div
                             className="button"
                             onClick={() => {
-                              // myCart 배열에 똑같은 상품이 있는지 확인
-                              // 똑같은 상품있으면 push X
                               const cloneMyCart = [...myCart];
                               cloneMyCart.push(item);
                               setMyCart(cloneMyCart);
@@ -118,24 +118,24 @@ function App() {
             {myCart ? (
               myCart.map((item, index) => {
                 return (
-                  <div key={`products-${index}`}>
+                  <div key={item.index}>
                     <div className="item">
                       <div className="item-block">
                         <div className="image-area">
                           <img
                             onClick={() => {
                               const cloneShowModal = { ...showModal };
-                              cloneShowModal.image = item.image;
                               cloneShowModal.show = true;
+                              cloneShowModal.image = item.image;
                               setShowModal(cloneShowModal);
                             }}
                             src={item.image}
-                            alt="상품이미지"
                             className="image"
+                            alt="상품이미지"
                           />
                         </div>
                         <div className="name">{item.name}</div>
-                        <div className="description">{item.descrition}</div>
+                        <div className="descrition">{item.descrition}</div>
                         <div className="bottom-area">
                           <div className="price">{item.price}</div>
                           <div className="button">
