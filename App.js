@@ -56,22 +56,29 @@ function App() {
    */
 
   // 불필요하게 실행되는 함수를 미실행하게 하는 함수 useMemo
-  // 함수를 즉시 실행시키는 함수 ()로 묶어주기
+  // >> 다른 부분을 클릭해도 실행되버리기에 이것을 방지해줌
+  // >> 장바구니에 있는 상품이 변경되면 실행하기만 하면 됨
+  // 함수를 즉시 실행시키는 위해 함수를 ()로 묶어주기
+  // , [myCart] 해줌으로써 이것만 변경되면 빈 배열에 총금액이 합산되어 쌓임
+  // >> 의존성
   const 총금액 = React.useMemo(() => {
     let 금액 = 0;
+
     myCart.forEach((item) => {
       금액 += parseInt(item.price);
     });
+
     return 금액;
   }, [myCart]);
 
+  // Node.js 실행시키기 위한 함수 적용
   const 서버요청테스트 = () => {
     axios({
-      method: "get",
-      dataType: "json",
-      url: "http://localhost:4000/test",
+      method: "get", // 기본값이라 삭제 가능
+      dataType: "json", // 기본값이라 삭제 가능
+      url: "http://localhost:4000/test", //server.js 에서 값 그대로 추가해주어야 함
       params: {
-        age: 30,
+        age: 37,
         name: "보연",
       },
     })
@@ -83,7 +90,9 @@ function App() {
 
   return (
     <div className="App">
-      <button onclick={서버요청테스트} />
+      <button onClick={서버요청테스트} style={{ padding: 50 }}>
+        서버 요청 테스트
+      </button>
       <div className="wrapper">
         <div className="screen -left">
           <img
@@ -96,7 +105,7 @@ function App() {
             {products &&
               products.map((item, index) => {
                 return (
-                  <div key={item.index}>
+                  <div key={`products-${index}`}>
                     <div className="item">
                       <div className="item-block">
                         <div className="image-area">
@@ -156,7 +165,7 @@ function App() {
             {myCart ? (
               myCart.map((item, index) => {
                 return (
-                  <div key={item.index}>
+                  <div key={`products-${index}`}>
                     <div className="item">
                       <div className="item-block">
                         <div className="image-area">
@@ -213,8 +222,8 @@ function App() {
             )}
           </div>
         </div>
+        <h3>Total Cost :{총금액}</h3>
       </div>
-      <div className="totalCost">Total Cost :{총금액}</div>
 
       {showModal.show && (
         <>

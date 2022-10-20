@@ -20,6 +20,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap; /*total cost 정렬위해서 적용*/
   position: relative;
   padding: 40px 20px; /*상하 우좌*/
   margin: 0 auto;
@@ -91,6 +92,7 @@ a {
   display: flex;
   justify-content: space-between; /*좌우로 벌리기*/
   align-items: center;
+  font-weight: bold;
 }
 
 /*이미지 설명*/
