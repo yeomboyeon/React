@@ -1,5 +1,5 @@
 import React from "react"; // React 실행하기 위해 import 추가
-
+import axios from "axios";
 import "./App.css";
 
 function App() {
@@ -54,8 +54,36 @@ function App() {
    * 장바구니 클릭시 동일 상품 표시안되도록 구현하기
    * ...연산자 활용
    */
+
+  // 불필요하게 실행되는 함수를 미실행하게 하는 함수 useMemo
+  // 함수를 즉시 실행시키는 함수 ()로 묶어주기
+  const 총금액 = React.useMemo(() => {
+    let 금액 = 0;
+    myCart.forEach((item) => {
+      금액 += parseInt(item.price);
+    });
+    return 금액;
+  }, [myCart]);
+
+  const 서버요청테스트 = () => {
+    axios({
+      method: "get",
+      dataType: "json",
+      url: "http://localhost:4000/test",
+      params: {
+        age: 30,
+        name: "보연",
+      },
+    })
+      .then((response) => {})
+      .catch((e) => {
+        console.log("네트워크 에러");
+      });
+  };
+
   return (
     <div className="App">
+      <button onclick={서버요청테스트} />
       <div className="wrapper">
         <div className="screen -left">
           <img
@@ -92,6 +120,16 @@ function App() {
                             className="button"
                             onClick={() => {
                               const cloneMyCart = [...myCart];
+                              const 이미가지고있는상품 = cloneMyCart.find(
+                                (myItem) => {
+                                  return myItem.name === item.name;
+                                }
+                              );
+                              console.log(이미가지고있는상품);
+                              if (이미가지고있는상품) {
+                                alert("이미 선택된 상품입니다.");
+                                return;
+                              }
                               cloneMyCart.push(item);
                               setMyCart(cloneMyCart);
                             }}
@@ -138,8 +176,20 @@ function App() {
                         <div className="descrition">{item.descrition}</div>
                         <div className="bottom-area">
                           <div className="price">{item.price}</div>
-                          <div className="button">
-                            <p>ADD TO CART</p>
+                          <div
+                            className="button"
+                            onClick={() => {
+                              const cloneMyCart = [...myCart];
+                              const newMyCart = cloneMyCart.filter((myItem) => {
+                                // console.log(myItem.name, item.name);
+                                return myItem.name !== item.name;
+                              });
+                              // console.log(newMyCart);
+                              setMyCart(newMyCart);
+                            }}
+                            style={{ backgroundColor: "red", color: "#fff" }}
+                          >
+                            <p>REMOVE</p>
                           </div>
                         </div>
                       </div>
@@ -164,6 +214,7 @@ function App() {
           </div>
         </div>
       </div>
+      <div className="totalCost">Total Cost :{총금액}</div>
 
       {showModal.show && (
         <>
