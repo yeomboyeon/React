@@ -26,12 +26,19 @@ const port = 4000;
 // / 경로
 // res.send 빈값이라도 보내줘야지 안그러면 네트워크 에러 발생
 
+// DB에 있는 장바구니 데이터 send 하기
+app.get("/myCart", (req, res) => {
+  res.send("??");
+});
+
 app.get("/", (req, res) => {
   res.send("Node.js 시작");
 });
 
 app.get("/test", (req, res) => {
-  console.log(req, query);
+  DB.테스트.push("테스트중");
+  console.log(DB.테스트);
+  // console.log(req, query);
   res.send({
     code: "success",
     msg: "테스트 성공",

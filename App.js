@@ -33,6 +33,22 @@ function App() {
     image: null,
   });
 
+  const 서버에있는장바구니가져오기 = async () => {
+    await axios({
+      url: "http://localhost:4000/myCart",
+    })
+      .then((response) => {
+        setMyCart(myCart);
+      })
+      .catch((e) => {});
+  };
+
+  // 서버에 있는 장바구니 데이터 가져오기
+  // 새로고침할 때 마다 한번 실행하기 : [] 빈 배열 넣은 이유
+  React.useEffect(() => {
+    서버에있는장바구니가져오기();
+  }, []);
+
   // useEffect 함수 추가(이미지 클릭 후 주변 배경 클릭시 사라지게 함)
   // click 이벤트, ...함수, show 화면과 image 화면에 각각 처리
   // setshowmodal 변수로 하여금 셋팅값 변경 처리
@@ -72,19 +88,24 @@ function App() {
   }, [myCart]);
 
   // Node.js 실행시키기 위한 함수 적용
-  const 서버요청테스트 = () => {
-    axios({
-      method: "get", // 기본값이라 삭제 가능
-      dataType: "json", // 기본값이라 삭제 가능
+  const 서버요청테스트 = async () => {
+    // 비동기식
+    // 비동기식을 동기로 전환하는 함수 : async, await
+    await axios({
+      // method: "get", // 기본값이라 삭제 가능
+      // dataType: "json", // 기본값이라 삭제 가능
       url: "http://localhost:4000/test", //server.js 에서 값 그대로 추가해주어야 함
-      params: {
-        age: 37,
-        name: "보연",
-      },
+      // params: {
+      //   age: 37,
+      //   name: "보연",
+      // },
     })
-      .then((response) => {})
+      .then((response) => {
+        // 서버에서 받아오기
+        console.log(response);
+      })
       .catch((e) => {
-        console.log("네트워크 에러");
+        console.log("네트워크 에러", e);
       });
   };
 
