@@ -2,6 +2,36 @@ import React from "react"; // React 실행하기 위해 import 추가
 import axios from "axios";
 import "./App.css";
 
+function 상품정보(props) {
+  const { item, 모달창열기, 상품액션, 버튼이름, 버튼 } = props; // 추가
+
+  return (
+    // <div key={`products-${index}`}> //키 값 삭제
+    <div>
+      <div className="item">
+        <div className="item-block">
+          <div className="image-area">
+            <img
+              onClick={모달창열기.bind(this, item)}
+              src={item.image}
+              className="image"
+              alt="상품이미지"
+            />
+          </div>
+          <div className="name">{item.name}</div>
+          <div className="descrition">{item.descrition}</div>
+          <div className="bottom-area">
+            <div className="price">{item.price}</div>
+            <div className="button" onClick={상품액션.bind(this, item)}>
+              <p>{버튼()}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   // 적용하려는 관련 객체들 저장
   const [products, setProducts] = React.useState([
@@ -112,6 +142,43 @@ function App() {
       });
   };
 
+  const 모달창열기 = (item) => {
+    const cloneShowModal = { ...showModal };
+    cloneShowModal.show = true;
+    cloneShowModal.image = item.image;
+    setShowModal(cloneShowModal);
+  };
+
+  const 상품장바구니에담기 = async (item) => {
+    const cloneMyCart = [...myCart];
+    const 이미가지고있는상품 = cloneMyCart.find((myItem) => {
+      return myItem.name === item.name;
+    });
+    console.log(이미가지고있는상품);
+    if (이미가지고있는상품) {
+      alert("이미 선택된 상품입니다.");
+      return;
+    }
+    // await 동기를 비동기로 변환
+    await axios({
+      url: "http://localhost:4000/add/cart",
+      method: "get",
+      dataType: "json",
+      params: item,
+    })
+      .then((res) => {})
+      .catch((e) => {
+        console.log(e);
+      });
+
+    cloneMyCart.push(item);
+    setMyCart(cloneMyCart);
+  };
+
+  const 상품장바구니에서삭제하기 = () => {
+    alert("장바구니에서 삭제해야합니다!");
+  };
+
   return (
     <div className="App">
       <button onClick={서버요청테스트} style={{ padding: 50 }}>
@@ -129,62 +196,18 @@ function App() {
             {products &&
               products.map((item, index) => {
                 return (
-                  <div key={`products-${index}`}>
-                    <div className="item">
-                      <div className="item-block">
-                        <div className="image-area">
-                          <img
-                            onClick={() => {
-                              const cloneShowModal = { ...showModal };
-                              cloneShowModal.show = true;
-                              cloneShowModal.image = item.image;
-                              setShowModal(cloneShowModal);
-                            }}
-                            src={item.image}
-                            className="image"
-                            alt="상품이미지"
-                          />
-                        </div>
-                        <div className="name">{item.name}</div>
-                        <div className="descrition">{item.descrition}</div>
-                        <div className="bottom-area">
-                          <div className="price">{item.price}</div>
-                          <div
-                            className="button"
-                            onClick={async () => {
-                              const cloneMyCart = [...myCart];
-                              const 이미가지고있는상품 = cloneMyCart.find(
-                                (myItem) => {
-                                  return myItem.name === item.name;
-                                }
-                              );
-                              console.log(이미가지고있는상품);
-                              if (이미가지고있는상품) {
-                                alert("이미 선택된 상품입니다.");
-                                return;
-                              }
-                              // await 동기를 비동기로 변환
-                              await axios({
-                                url: "http://localhost:4000/add/cart",
-                                method: "get",
-                                dataType: "json",
-                                params: item,
-                              })
-                                .then((res) => {})
-                                .catch((e) => {
-                                  console.log(e);
-                                });
-
-                              cloneMyCart.push(item);
-                              setMyCart(cloneMyCart);
-                            }}
-                          >
-                            <p>ADD TO CART</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  // eslint-disable-next-line react/jsx-pascal-case
+                  <상품정보
+                    key={`product-${index}`}
+                    item={item}
+                    모달창열기={모달창열기}
+                    상품액션={상품장바구니에담기} // 담고, 빼는 용도로 함수가 달라서 다르게 적용
+                    버튼이름="ADD TO CART"
+                    버튼={() => {
+                      //범용성 향상(나중에 변경 용이)
+                      return <p>ADD TO CART</p>;
+                    }}
+                  />
                 );
               })}
           </div>
@@ -201,45 +224,17 @@ function App() {
             {myCart ? (
               myCart.map((item, index) => {
                 return (
-                  <div key={`products-${index}`}>
-                    <div className="item">
-                      <div className="item-block">
-                        <div className="image-area">
-                          <img
-                            onClick={() => {
-                              const cloneShowModal = { ...showModal };
-                              cloneShowModal.show = true;
-                              cloneShowModal.image = item.image;
-                              setShowModal(cloneShowModal);
-                            }}
-                            src={item.image}
-                            className="image"
-                            alt="상품이미지"
-                          />
-                        </div>
-                        <div className="name">{item.name}</div>
-                        <div className="descrition">{item.descrition}</div>
-                        <div className="bottom-area">
-                          <div className="price">{item.price}</div>
-                          <div
-                            className="button"
-                            onClick={() => {
-                              const cloneMyCart = [...myCart];
-                              const newMyCart = cloneMyCart.filter((myItem) => {
-                                // console.log(myItem.name, item.name);
-                                return myItem.name !== item.name;
-                              });
-                              // console.log(newMyCart);
-                              setMyCart(newMyCart);
-                            }}
-                            style={{ backgroundColor: "red", color: "#fff" }}
-                          >
-                            <p>REMOVE</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  // eslint-disable-next-line react/jsx-pascal-case
+                  <상품정보
+                    key={`myCart-${index}`}
+                    item={item}
+                    모달창열기={모달창열기}
+                    상품액션={상품장바구니에서삭제하기}
+                    버튼이름="DELETE"
+                    버튼={() => {
+                      return <p style={{ color: "red" }}>DELETE</p>;
+                    }}
+                  />
                 );
               })
             ) : (
