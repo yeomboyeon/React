@@ -33,20 +33,23 @@ function App() {
     image: null,
   });
 
-  const 서버에있는장바구니가져오기 = async () => {
+  const 서버에있는상품정보가져오기 = async () => {
     await axios({
       url: "http://localhost:4000/myCart",
     })
-      .then((response) => {
-        setMyCart(myCart);
+      .then((res) => {
+        console.log(res);
+        setMyCart(res.data);
       })
-      .catch((e) => {});
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   // 서버에 있는 장바구니 데이터 가져오기
   // 새로고침할 때 마다 한번 실행하기 : [] 빈 배열 넣은 이유
   React.useEffect(() => {
-    서버에있는장바구니가져오기();
+    서버에있는상품정보가져오기();
   }, []);
 
   // useEffect 함수 추가(이미지 클릭 후 주변 배경 클릭시 사라지게 함)
@@ -148,7 +151,7 @@ function App() {
                           <div className="price">{item.price}</div>
                           <div
                             className="button"
-                            onClick={() => {
+                            onClick={async () => {
                               const cloneMyCart = [...myCart];
                               const 이미가지고있는상품 = cloneMyCart.find(
                                 (myItem) => {
@@ -160,6 +163,18 @@ function App() {
                                 alert("이미 선택된 상품입니다.");
                                 return;
                               }
+                              // await 동기를 비동기로 변환
+                              await axios({
+                                url: "http://localhost:4000/add/cart",
+                                method: "get",
+                                dataType: "json",
+                                params: item,
+                              })
+                                .then((res) => {})
+                                .catch((e) => {
+                                  console.log(e);
+                                });
+
                               cloneMyCart.push(item);
                               setMyCart(cloneMyCart);
                             }}
