@@ -271,6 +271,10 @@ function App() {
 
 // 추가
 function Main() {
+  const context = React.useContext(StoreContext);
+
+  // console.log(context);
+
   return <div>메인페이지</div>;
 }
 
@@ -291,13 +295,25 @@ function Sub() {
   );
 }
 
+// useContext 활용
+const StoreContext = React.createContext({});
+
 // react-router-dom 추가
 function Test() {
+  const [loginUser, setLoginUser] = React.useState({
+    id: "1",
+    name: "보연",
+    age: 37,
+  });
+  //loginUser에 자료를 StoreContext.Provider를 통해서 바로 사용 가능
+  //value 안에 들어가는 값이 전역변수로 활용 가능
   return (
-    <Routes>
-      <Route exact path="/" element={<Main />} />
-      <Route exact path="/sub" element={<Sub />} />
-    </Routes>
+    <StoreContext.Provider value={{ loginUser }}>
+      <Routes>
+        <Route exact path="/" element={<Main />} />
+        <Route exact path="/sub" element={<Sub />} />
+      </Routes>
+    </StoreContext.Provider>
   );
 }
 
