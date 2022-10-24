@@ -1,6 +1,7 @@
 import React from "react"; // React 실행하기 위해 import 추가
 import axios from "axios";
 import "./App.css";
+import { Routes, Route, useNavigate } from "react-router-dom"; // 추가
 
 function 상품정보(props) {
   const { item, 모달창열기, 상품액션, 버튼이름, 버튼 } = props; // 추가
@@ -268,4 +269,36 @@ function App() {
   );
 }
 
-export default App;
+// 추가
+function Main() {
+  return <div>메인페이지</div>;
+}
+
+// 추가(navigation)
+function Sub() {
+  const navigation = useNavigate();
+  return (
+    <div>
+      서브페이지
+      <div
+        onClick={() => {
+          navigation("/");
+        }}
+      >
+        메인페이지로 이동
+      </div>
+    </div>
+  );
+}
+
+// react-router-dom 추가
+function Test() {
+  return (
+    <Routes>
+      <Route exact path="/" element={<Main />} />
+      <Route exact path="/sub" element={<Sub />} />
+    </Routes>
+  );
+}
+
+export default Test;
