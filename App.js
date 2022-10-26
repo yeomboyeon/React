@@ -1,56 +1,18 @@
 import "./App.css";
 import { useState, useEffect } from "react"; // 추가
-
+import Timer from "./component/Timmer";
 /**
-useEffect(( ) => { // 작업할 코드 }, [value]);
-* 콜백함수 + 배열(dependency array)
-* 값이 변할때에만 실행되도록 할려면 [ ] 추가
-* 해당 값만 실행되기에 효율적임
-
-useEffect(( ) => { // 작업할 코드 }, [  ]);
-* 첫 랜더링 할때만 실행
+클린 업
  */
 
 function App() {
-  const [count, setCount] = useState(1);
-  const [name, setName] = useState("");
+  const [showTimer, setShowTimer] = useState(false);
 
-  const handleCountUpdate = () => {
-    setCount(count + 1);
-  };
-
-  const handleInputChange = (e) => {
-    setName(e.target.value);
-  };
-
-  console.log(count);
-
-  // 랜더링 될 때마다 실행
-  useEffect(() => {
-    console.log("랜더링");
-  });
-
-  // 처음 랜더링 될 때만 실행
-  useEffect(() => {
-    console.log("랜더링");
-  }, []);
-
-  // 마운트 + [해당값] 만 변경 될 때마다 실행
-  useEffect(() => {
-    console.log("랜더링");
-  }, [count]);
-
-  // 마운트 + [해당값] 만 변경 될 때마다 실행
-  useEffect(() => {
-    console.log("랜더링");
-  }, [name]);
-
+  // showTimer 참일때만 보여주기 &&
   return (
     <div>
-      <button onClick={handleCountUpdate}>Update</button>
-      <span>count : {count}시</span>
-      <input type="text" value={name} onChange={handleInputChange} />
-      <span>name : {name}</span>
+      {showTimer && <Timer />}
+      <button onClick={() => setShowTimer(!showTimer)}>Toggle Timer</button>
     </div>
   );
 }
