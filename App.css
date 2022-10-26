@@ -4,165 +4,63 @@
   margin: 0px;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 ul,
 li {
   list-style: none;
-}
-
-a {
-  text-decoration: none;
   color: inherit;
 }
 
-/*전체 태그*/
-.wrapper {
-  height: 100vh; /*부모 태그 상관없이 100%*/
+button {
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+
+body {
+  background-color: #a6c0d5;
+}
+
+.main-app {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap; /*total cost 정렬위해서 적용*/
-  position: relative;
-  padding: 40px 20px; /*상하 우좌*/
-  margin: 0 auto;
-  max-width: 720px;
+  height: 100vh;
+  width: 480px;
+  margin: 0px auto;
 }
 
-/*좌,우 스크롤 태그*/
-.screen {
+.btn {
+  background-color: #fbe400;
+  color: #000;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px 40px;
+  margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: grey 2px 2px 4px;
+}
+
+.progress-bar {
+  width: 100%;
   background-color: #fff;
-  box-sizing: border-box; /*박스 크기는 테두리 기준*/
-  width: 300px;
-  height: 600px;
-  box-shadow: 0 3.2px 2.2px rgb(0 0 0 / 2%), 0 7px 5.4px rgb(0 0 0 / 3%),
-    0 12.1px 10.1px rgb(0 0 0 / 4%), 0 19.8px 18.1px rgb(0 0 0 / 4%),
-    34.7px 33.8px rgb(0 0 0 / 5%), 0 81px 81px rgb(0 0 0 / 7%);
-  /*구글링 그림자효과 태그 적용*/
-  border-radius: 30px;
-  overflow-y: auto; /*넘칠때 스크롤 지정*/
-  padding: 0 30px;
-  position: relative;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border: 1px solid black;
+  height: 30px;
+  border-radius: 12px;
 }
 
-/*좌상단 로고*/
-.logo {
-  display: block;
+.percent {
+  background-color: #fbe400;
+  height: 30px;
+  border-radius: 12px;
   width: 50px;
 }
 
-/*로고 하단 제목*/
-.screen > .title {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 20px 0;
-  position: relative;
-}
-
-/*이미지 총괄 태그*/
-.item-block > .image-area {
-  border-radius: 30px;
-  height: 300px;
-  display: flex;
-}
-
-/*이미지 */
-.item-block > .image-area > .image {
-  display: block;
-  width: 100%;
-  margin-left: -16px;
-  cursor: pointer;
-  transform: rotate(-24deg); /*이미지 대각으로 돌리기*/
-  filter: drop-shadow(
-    0 30px 20px rgba(0, 0, 0, 0.2)
-  ); /*이미지에 그림자 시각효과 주기*/
-}
-
-/*이미지 이름*/
-.item-block > .name {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 20px 0 20px;
-  line-height: 1; /*줄 간격*/
-}
-
-/*장바구니 버튼 총괄*/
-.item-block > .bottom-area {
-  display: flex;
-  justify-content: space-between; /*좌우로 벌리기*/
-  align-items: center;
-  font-weight: bold;
-}
-
-/*이미지 설명*/
-.item-block > .descrition {
-  font-size: 12px;
-  color: #777;
-  line-height: 1.5;
-  margin-bottom: 15px;
-}
-
-/*스크롤바 옵션 변경*/
-/* .screen::-webkit-scrollbar {
-  width: 6px;
-}
-.screen::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-.screen::-webkit-scrollbar-thumb {
-  border-radius: 3px;
-  background-color: gray;
-}
-.screen::-webkit-scrollbar-button {
-  width: 0;
-  height: 0;
-} */
-
-/*스크롤바 없앨려면*/
-.screen::-webkit-scrollbar {
-  display: none;
-}
-
-/*장바구니 태그*/
-.button {
-  background-color: yellow;
-  border-radius: 6px;
-  padding: 5px;
-  cursor: pointer;
-}
-
-/*장바구니 글자 태그*/
-.button > p {
-  font-weight: bold;
-  font-size: 15px;
-}
-
-/*modal 팝업 효과*/
-.modal {
-  position: fixed;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  min-width: 300px;
-  min-height: 300px;
-  border-radius: 24px;
-  background-color: #fff;
-  border-radius: 0 0 0 1px rgb(53 72 91 / 7%), 0 2px 2px rgb(0 0 0 / 1%),
-    0 4px 4px rgb(0 0 0 / 2%), 0 10px 8px rgb(0 0 0 / 3%),
-    0 15px 15px rgb(0 0 0 / 3%), 0 30px 30px rgb(0 0 0 / 4%),
-    0 70px 65px rgb(0 0 0 / 5%);
-  border: 1px solid #eee;
-  padding: 12px;
-}
-
-/*외부 창*/
-.modal-bg {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  background: black;
-  opacity: 0.4;
-  position: fixed;
-  top: 0px;
+.image-box {
+  margin-top: 60px;
+  margin-bottom: 60px;
 }
