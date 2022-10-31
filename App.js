@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 // 1. import 추가 ({ Routes, Route }, "react-router-dom")
 // 2. App Routes, Route 실행 경로 및 함수 추가
@@ -52,9 +53,11 @@ const Answer = (props) => {
         setDispatchType({
           code: "답변",
           params: {
-            value: props.value,
+            value: props.value, // 클릭한 값
           },
         });
+
+        // console.log(`내가 누른 값 ${props.value}, cloneMbti`);
         // const pathname = window.location.pathname;
         // const nextStep = parseInt(pathname.charAt(pathname.length - 1) + 1);
         // // console.log(nextStep); // 11(문자+숫자로 표기됨)
@@ -131,7 +134,30 @@ function On5() {
   );
 }
 
-function Result() {
+function Result(params) {
+  const { state } = useLocation();
+  // console.log(state);
+
+  // axios
+  const MBTI결과가져오기 = () => {
+    axios({
+      url: "http://localhost:5000/mbti",
+      method: "get",
+      responseType: "json",
+      params: state,
+    })
+      .than(() => {})
+      .catch((e) => {
+        console.log("에러", e);
+      });
+  };
+
+  React.useEffect(() => {
+    MBTI결과가져오기();
+  });
+
+  console.log(MBTI결과가져오기);
+
   return <div>결과화면</div>;
 }
 
@@ -162,12 +188,14 @@ const StoreContext = React.createContext({});
 // useContext 활용
 // React useReducer(비지니스 로직 분리되어 있는걸 한곳에 모음)
 function App() {
-  //
+  const navigation = useNavigate();
+
   const [dispatch, setDispatchType] = React.useState({
     code: null,
     params: null,
   });
 
+  // 내가 답변한 mbti 값 저장해놓을 곳
   const [mbti, setMbti] = React.useState([
     {
       I: 0, // 내향
@@ -187,20 +215,48 @@ function App() {
     },
   ]);
 
+  // // 버튼을 누를때마다 setMbti 를 통해 값 변경
+  // // findIndex 활용 index 값을 찾기
+  // const findIndex = setMbti.findIndex((item) => {
+  //   // console.log(item);
+  //   return item == setMbti;
+  // });
+
   // 로그인 로직
   const [loginUser, setLoginUser] = React.useState({
     id: "zz",
     pw: "zz",
   });
 
-  //mbti state 값 바꾸는 로직 구현
+  //페이지 이동
+  let [page, setPage] = React.useState(1);
+
+  //mbti state 값 바꾸는 로직 구현(의존) * 한번 실행하고 끝.
   React.useEffect(() => {
-    // console.log(dispatch);
+    console.log(dispatch);
     switch (dispatch.code) {
       case "답변":
-        const { value } = dispatch.params;
-        break;
+        const cloneMbti = [...mbti];
+        const findIndex = cloneMbti.findIndex((item) => {
+          return item[dispatch.params.value] !== undefined;
+        });
 
+        cloneMbti[findIndex][dispatch.params.value] += 1;
+        setMbti(cloneMbti);
+        // console.log(cloneMbti[findIndex][dispatch.params.value]);
+
+        // 클릭해서 답변 담길 때 페이지 이동
+        const nextPage = (page += 1);
+
+        setPage(nextPage);
+
+        if (nextPage === 6) {
+          navigation("/result", {
+            state: mbti,
+          });
+        } else {
+          navigation(`/on${nextPage}`); // 경로 주소에 맞게 작성(대소문자 구분)
+        }
         break;
 
       /**
@@ -212,10 +268,13 @@ function App() {
       default:
         break;
     }
+    // 의존성(dispatch 실행될 때마다 함수 실행)
   }, [dispatch]);
 
   // StoreContext 사용을 통해 setMbti 전 경로에서 사용 가능
+  //
   return (
+    // mbti를 여기에 줘도 되나, 결과창에만 보여주기에 낭비여서 주지 않음
     <StoreContext.Provider value={{ setDispatchType }}>
       <Routes>
         <Route exact path="/" element={<Main />}></Route>
