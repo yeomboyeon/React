@@ -4,21 +4,18 @@ html {
 }
 
 /* 노말라이즈 */
-* {
-  box-sizing: border-box;
+body,
+ul,
+li,
+h1 {
   margin: 0;
   padding: 0;
+  list-style: none;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-}
-
-ul,
-li {
-  list-style: none;
-  color: inherit;
 }
 
 body {
@@ -31,39 +28,41 @@ button {
   border: none;
 }
 
-.btn {
-  background-color: #fbe400;
-  padding: 10px 40px;
-  margin: 20px;
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 20px;
-  border-radius: 5px;
-  box-shadow: grey 2px 2px 4px;
-  width: 100%;
-}
-
-.main-app {
+.main-App {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
   width: 400px;
-  margin: 0px auto;
+  margin: 0 auto;
 }
 
-.progress-bar {
+.btn {
   width: 100%;
-  height: 30px;
-  background-color: white;
-  border-radius: 12px;
+  height: 50px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 40px;
+  background-color: #fbe400;
+  border-radius: 5px;
+  padding: 10px 40px;
+  box-shadow: grey 2px 2px 4px;
 }
 
-.percent {
-  background-color: #fbe400;
+.percent-Bar {
+  width: 400px;
   height: 30px;
-  border-radius: 12px;
+  border-radius: 5px;
+  background-color: white;
+  margin-bottom: 50px;
+}
+
+.percent-Bar > .percent {
+  width: 20%;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #fbe400;
 }
 
 .image-box {
